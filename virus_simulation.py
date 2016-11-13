@@ -21,12 +21,12 @@ def getSimulationResults(graph,transmit,heal,noOfSim):
         tempInfected = set()
         for infectedNode in infectedNodes:
             infectProb = random.random()
-            if infectProb>transmit:
+            if infectProb<transmit:
                 for neighborNode in graph.neighbors(infectedNode):
                     if neighborNode not in healedNodes and neighborNode not in infectedNodes:
                         tempInfected.add(neighborNode)
             healProb = random.random()
-            if healProb> heal:
+            if healProb<heal:
                 healedNodes.add(infectedNode)
         infectedNodes = infectedNodes.union(tempInfected)
         infectedNodes = infectedNodes - healedNodes
@@ -35,7 +35,7 @@ def getSimulationResults(graph,transmit,heal,noOfSim):
 
 def saveFigure(values):
     fig , ax = plt.subplots(nrows=1,ncols=1)
-    ax.plot(range(len(values)),values)
+    ax.plot(range(1,len(values)+1),values)
     fig.savefig('results_plot.jpg')
     plt.close(fig)
 
