@@ -15,7 +15,8 @@ def createGraph(filename):
 
 def getSimulationResults(graph,transmit,heal,noOfSim):
     results = list()
-    infectedNodes = set(random.sample(xrange(graph.number_of_nodes()),graph.number_of_nodes()/10))
+    #infectedNodes = set(random.sample(xrange(graph.number_of_nodes()),graph.number_of_nodes()/10))
+    infectedNodes = set(random.sample(graph.nodes(),graph.number_of_nodes()/10))
     for simno in xrange(noOfSim):
         healedNodes = set()
         tempInfected = set()
