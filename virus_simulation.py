@@ -35,7 +35,7 @@ def getSimulationResults(graph,transmit,heal,noOfSim):
 def saveFigure(values,transmit,heal):
     fig , ax = plt.subplots(nrows=1,ncols=1)
     ax.plot(range(1,len(values)+1),values)
-    fig.savefig('results_plot_transmit('+transmit+')_heal('+heal+').jpg')
+    fig.savefig('results_plot_transmit('+str(transmit)+')_heal('+str(heal)+').jpg')
     plt.close(fig)
 
 
@@ -60,5 +60,5 @@ if __name__=='__main__':
         results = getSimulationResults(graph,transmit,heal,noOfSim)
         finalResults = [ finalResults[index] + results[index] for index in xrange(noOfSim)  ]
     finalResults = map(lambda x: x/10,finalResults)
-    saveFigure(finalResults)
+    saveFigure(finalResults,transmit,heal)
     exit()
