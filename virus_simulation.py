@@ -20,11 +20,10 @@ def getSimulationResults(graph,transmit,heal,noOfSim):
         healedNodes = set()
         tempInfected = set()
         for infectedNode in infectedNodes:
-            infectProb = random.random()
-            if infectProb<transmit:
-                for neighborNode in graph.neighbors(infectedNode):
-                    if neighborNode not in healedNodes and neighborNode not in infectedNodes:
-                        tempInfected.add(neighborNode)
+            for neighborNode in graph.neighbors(infectedNode):
+                infectProb = random.random()
+                if infectProb<transmit and neighborNode not in healedNodes and neighborNode not in infectedNodes:
+                    tempInfected.add(neighborNode)
             healProb = random.random()
             if healProb<heal:
                 healedNodes.add(infectedNode)
@@ -33,10 +32,10 @@ def getSimulationResults(graph,transmit,heal,noOfSim):
         results.append( float(len(infectedNodes))/graph.number_of_nodes() )
     return results
 
-def saveFigure(values):
+def saveFigure(values,transmit,heal):
     fig , ax = plt.subplots(nrows=1,ncols=1)
     ax.plot(range(1,len(values)+1),values)
-    fig.savefig('results_plot.jpg')
+    fig.savefig('results_plot_transmit('+transmit+')_heal('+heal+').jpg')
     plt.close(fig)
 
 
@@ -44,7 +43,7 @@ if __name__=='__main__':
     filename = '../virus/static.network'
     transmit = 0.2
     heal = 0.7
-    noOfSim = 10
+    noOfSim = 100
 
     if len(sys.argv)>1:
         if len(sys.argv)<5:
@@ -56,6 +55,10 @@ if __name__=='__main__':
         noOfSim = int(sys.argv[4])
 
     graph = createGraph(filename)
-    results = getSimulationResults(graph,transmit,heal,noOfSim)
-    saveFigure(results)
+    finalResults = [ 0. for i in xrange(noOfSim) ]
+    for i in xrange(10):
+        results = getSimulationResults(graph,transmit,heal,noOfSim)
+        finalResults = [ finalResults[index] + results[index] for index in xrange(noOfSim)  ]
+    finalResults = map(lambda x: x/10,finalResults)
+    saveFigure(finalResults)
     exit()
